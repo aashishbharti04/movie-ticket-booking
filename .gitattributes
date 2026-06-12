@@ -1,0 +1,16 @@
+# Normalise line endings: LF in the repo, native in the working tree.
+* text=auto eol=lf
+
+# Binary assets — never normalise.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text eol=lf
+*.docx binary
+*.pptx binary
+
+# Linguist: keep vendored/legacy out of language stats.
+legacy/** linguist-vendored
+docs/** linguist-documentation

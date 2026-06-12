@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="description"
+        content="{% block meta_description %}Book movie tickets in seconds — choose your seats, pick your snacks, and manage every booking from one beautiful dashboard.{% endblock %}" />
+  <meta name="theme-color" content="#0b0d17" />
+
+  <!-- Open Graph / social -->
+  <meta property="og:title" content="{{ config.PROJECT_NAME }} — Movie Ticket Booking" />
+  <meta property="og:description" content="Book movie tickets in seconds with a fast, secure dashboard." />
+  <meta property="og:type" content="website" />
+
+  <title>{% block title %}{{ config.PROJECT_NAME }}{% endblock %} · {{ config.PROJECT_NAME }}</title>
+
+  <!-- Prevent theme flash: apply stored theme before first paint -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+        else if (window.matchMedia('(prefers-color-scheme: light)').matches)
+          document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml" />
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="{{ url_for('main.index') }}">
+        <span class="brand-mark" aria-hidden="true">🎬</span>
+        <span class="brand-name">{{ config.PROJECT_NAME }}</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"
+              data-nav-toggle>
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="nav-links" data-nav-links>
+        <a href="{{ url_for('main.index') }}">Home</a>
+        <a href="{{ url_for('main.about') }}">About</a>
+        {% if current_user.is_authenticated %}
+          <a href="{{ url_for('bookings.dashboard') }}">Dashboard</a>
+          <a class="btn btn-primary btn-sm" href="{{ url_for('bookings.create') }}">Book tickets</a>
+          <form action="{{ url_for('auth.logout') }}" method="post" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button type="submit" class="btn btn-ghost btn-sm">Sign out</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}">Sign in</a>
+          <a class="btn btn-primary btn-sm" href="{{ url_for('auth.signup') }}">Get started</a>
+        {% endif %}
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+          <span class="theme-toggle-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-stack container" role="status" aria-live="polite">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">
+            <span>{{ message }}</span>
+            <button class="flash-close" aria-label="Dismiss" data-flash-close>&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main id="main" class="site-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "components/footer.html" %}
+
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

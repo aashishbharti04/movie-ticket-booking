@@ -1,0 +1,26 @@
+[project]
+name = "movie-ticket-booking"
+version = "1.0.0"
+description = "A secure, production-ready movie ticket booking web app built with Flask."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Aashish Bharti", email = "aashish@marketdoctorsonline.com" }]
+keywords = ["flask", "booking", "movie", "tickets", "web-app"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+exclude = ["legacy", "migrations", "instance", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B", "UP", "C4"]
+ignore = ["B008"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --cov=app --cov-report=term-missing"
+filterwarnings = ["ignore::DeprecationWarning"]

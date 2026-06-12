@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% from "components/forms.html" import render_field %}
+{% block title %}Book tickets{% endblock %}
+
+{% block content %}
+<section class="section container" style="max-width: 640px;">
+  <div style="margin-bottom: var(--space-5);">
+    <span class="eyebrow">New booking</span>
+    <h1>Book your tickets</h1>
+    <p style="color: var(--text-soft);">Fill in the details below and we'll confirm your seats instantly.</p>
+  </div>
+
+  <div class="card reveal">
+    <form method="post" novalidate data-loading class="form-grid">
+      {{ form.hidden_tag() }}
+      {{ render_field(form.movie_name) }}
+      <div class="form-row">
+        {{ render_field(form.seat_class) }}
+        {{ render_field(form.seats, hint="1 to 20 seats.") }}
+      </div>
+      {{ render_field(form.show_time) }}
+      {{ render_field(form.snacks, hint="Optional — e.g. popcorn & cola.") }}
+
+      <div class="card" style="background: var(--surface-2); border-style: dashed;">
+        <strong>Per-seat pricing</strong>
+        <div class="booking-meta" style="margin-top: var(--space-2);">
+          {% for name, price in seat_prices.items() %}
+            <span>{{ name }}: ₹{{ price }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div style="display:flex; gap: var(--space-3); flex-wrap: wrap;">
+        {{ form.submit(class="btn btn-primary btn-lg") }}
+        <a class="btn btn-ghost btn-lg" href="{{ url_for('bookings.dashboard') }}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

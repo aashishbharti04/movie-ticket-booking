@@ -1,0 +1,11 @@
+{# Reusable field renderer — keeps every form consistent and accessible. #}
+{% macro render_field(field, hint=None, autocomplete=None) %}
+  <div class="field">
+    {{ field.label() }}
+    {{ field(autocomplete=autocomplete) if autocomplete else field() }}
+    {% if hint %}<span class="field-hint">{{ hint }}</span>{% endif %}
+    {% for error in field.errors %}
+      <span class="error" role="alert">{{ error }}</span>
+    {% endfor %}
+  </div>
+{% endmacro %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "components/forms.html" import render_field %}
+{% block title %}Create your account{% endblock %}
+
+{% block content %}
+<section class="auth-shell container">
+  <div class="card auth-card reveal" style="max-width: 540px;">
+    <div style="text-align:center; margin-bottom: var(--space-5);">
+      <span class="eyebrow">Get started</span>
+      <h1 style="font-size: 1.8rem;">Create your account</h1>
+    </div>
+    <form method="post" novalidate data-loading class="form-grid">
+      {{ form.hidden_tag() }}
+      <div class="form-row">
+        {{ render_field(form.first_name, autocomplete="given-name") }}
+        {{ render_field(form.last_name, autocomplete="family-name") }}
+      </div>
+      {{ render_field(form.username, autocomplete="username") }}
+      {{ render_field(form.email, autocomplete="email") }}
+      {{ render_field(form.phone, autocomplete="tel") }}
+      <div class="form-row">
+        {{ render_field(form.password, hint="At least 8 characters.", autocomplete="new-password") }}
+        {{ render_field(form.confirm, autocomplete="new-password") }}
+      </div>
+      {{ form.submit(class="btn btn-primary btn-block btn-lg") }}
+    </form>
+    <p class="form-foot">
+      Already have an account? <a href="{{ url_for('auth.login') }}">Sign in</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

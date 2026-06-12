@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Flask instance folder (SQLite DB, logs, secrets)
+instance/
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Test / coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+.ruff_cache/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Claude Code local settings (keep launch.json, ignore local overrides)
+.claude/settings.local.json
+
+# Playwright browser binaries cache (installed locally for screenshots)
+ms-playwright/
+
+# Migrations are kept, but local alembic versions cache is not
+migrations/__pycache__/

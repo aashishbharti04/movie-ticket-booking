@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+
+{% block content %}
+<section class="section container" style="max-width: 760px;">
+  <span class="eyebrow">About the project</span>
+  <h1>{{ config.PROJECT_NAME }}</h1>
+  <p class="lead" style="color: var(--text-soft);">
+    {{ config.PROJECT_NAME }} began life as a small command-line ticket booking
+    script for {{ config.THEATRE_NAME }}. It has been rebuilt from the ground up
+    into a secure, production-ready web application — while preserving the original
+    idea of letting customers sign up, choose a seat class, add snacks and book tickets.
+  </p>
+
+  <div class="card reveal" style="margin-top: var(--space-6);">
+    <h3>What changed</h3>
+    <ul style="color: var(--text-soft); line-height: 2;">
+      <li>SQL-injection-prone string queries replaced with the SQLAlchemy ORM.</li>
+      <li>Plaintext passwords replaced with salted PBKDF2 hashes.</li>
+      <li>Hardcoded credentials moved to environment variables.</li>
+      <li>A responsive, accessible interface with dark &amp; light themes.</li>
+      <li>Automated tests, linting and CI on every commit.</li>
+    </ul>
+  </div>
+
+  <div class="card reveal reveal-2" style="margin-top: var(--space-5);">
+    <h3>Open source</h3>
+    <p style="color: var(--text-soft); margin: 0;">
+      This project is open source under the MIT license and available for
+      educational, learning and community contributions. Contributions are
+      welcome on
+      <a href="https://github.com/aashishbharti04" target="_blank" rel="noopener noreferrer">GitHub</a>.
+    </p>
+  </div>
+</section>
+{% endblock %}

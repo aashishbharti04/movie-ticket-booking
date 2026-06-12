@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Page not found{% endblock %}
+{% block content %}
+<section class="section container">
+  <div class="empty-state reveal" style="max-width: 540px; margin-inline: auto;">
+    <div class="emoji">🔍</div>
+    <h1 style="font-size: 2rem;">404 — Page not found</h1>
+    <p>The page you're looking for doesn't exist or may have moved.</p>
+    <a class="btn btn-primary" href="{{ url_for('main.index') }}" style="margin-top: var(--space-4);">Back to home</a>
+  </div>
+</section>
+{% endblock %}

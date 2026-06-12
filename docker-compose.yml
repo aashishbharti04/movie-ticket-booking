@@ -1,0 +1,32 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # Generate a real secret for anything beyond local testing:
+      #   python -c "import secrets; print(secrets.token_hex(32))"
+      SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
+      FLASK_CONFIG: production
+      SESSION_COOKIE_SECURE: "false" # set true behind HTTPS
+      # Default uses the SQLite volume below. To use Postgres, uncomment the
+      # `db` service and set:
+      # DATABASE_URL: postgresql+psycopg://cinebook:cinebook@db/cinebook
+    volumes:
+      - instance-data:/app/instance
+    restart: unless-stopped
+
+  # Optional PostgreSQL — uncomment to use instead of SQLite.
+  # db:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_USER: cinebook
+  #     POSTGRES_PASSWORD: cinebook
+  #     POSTGRES_DB: cinebook
+  #   volumes:
+  #     - pg-data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+
+volumes:
+  instance-data:
+  # pg-data:

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Your dashboard{% endblock %}
+
+{% block content %}
+<section class="section container">
+  <div class="page-head reveal">
+    <div>
+      <span class="eyebrow">Dashboard</span>
+      <h1>Hi {{ current_user.first_name }} 👋</h1>
+      <p>Here's everything you've booked at {{ config.THEATRE_NAME }}.</p>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('bookings.create') }}">+ New booking</a>
+  </div>
+
+  <div class="grid grid-3 reveal reveal-2" style="margin-bottom: var(--space-8);">
+    <div class="card stat-card">
+      <span class="label">Total bookings</span>
+      <span class="value">{{ stats.total_bookings }}</span>
+    </div>
+    <div class="card stat-card">
+      <span class="label">Seats reserved</span>
+      <span class="value">{{ stats.total_seats }}</span>
+    </div>
+    <div class="card stat-card">
+      <span class="label">Total spent</span>
+      <span class="value">₹{{ stats.total_spent }}</span>
+    </div>
+  </div>
+
+  {% if bookings %}
+    <div class="booking-list">
+      {% for booking in bookings %}
+        <article class="booking reveal">
+          <div>
+            <div class="booking-title">
+              <h3>{{ booking.movie_name }}</h3>
+              <span class="badge badge-success">{{ booking.status|capitalize }}</span>
+            </div>
+            <div class="booking-meta">
+              <span>🎟️ {{ booking.seat_class }}</span>
+              <span>💺 {{ booking.seats }} seat{{ 's' if booking.seats != 1 }}</span>
+              <span>🕒 {{ booking.show_time.strftime('%d %b %Y, %I:%M %p') }}</span>
+              {% if booking.snacks %}<span>🍿 {{ booking.snacks }}</span>{% endif %}
+            </div>
+          </div>
+          <div class="booking-side">
+            <span class="booking-price">₹{{ booking.total_price }}</span>
+            <form action="{{ url_for('bookings.cancel', booking_id=booking.id) }}"
+                  method="post"
+                  onsubmit="return confirm('Cancel this booking? This cannot be undone.');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+            </form>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if pagination.pages > 1 %}
+      <nav class="pagination" aria-label="Bookings pagination">
+        {% if pagination.has_prev %}
+          <a href="{{ url_for('bookings.dashboard', page=pagination.prev_num) }}">← Prev</a>
+        {% endif %}
+        {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if p %}
+            {% if p == pagination.page %}
+              <span class="active">{{ p }}</span>
+            {% else %}
+              <a href="{{ url_for('bookings.dashboard', page=p) }}">{{ p }}</a>
+            {% endif %}
+          {% else %}
+            <span>…</span>
+          {% endif %}
+        {% endfor %}
+        {% if pagination.has_next %}
+          <a href="{{ url_for('bookings.dashboard', page=pagination.next_num) }}">Next →</a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% else %}
+    <div class="empty-state reveal">
+      <div class="emoji">🍿</div>
+      <h3>No bookings yet</h3>
+      <p>When you book your first movie, it'll show up here with all the details and your total.</p>
+      <a class="btn btn-primary" href="{{ url_for('bookings.create') }}" style="margin-top: var(--space-4);">Book your first movie</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
