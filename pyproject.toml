@@ -22,5 +22,6 @@ known-first-party = ["app"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-q --cov=app --cov-report=term-missing"
 filterwarnings = ["ignore::DeprecationWarning"]
